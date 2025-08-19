@@ -869,7 +869,7 @@
                         <input type="number" min="0" max="24" step="0.5" placeholder="0"
                             class="day-input"
                             id="${inputId}">
-                        <button class="day-check-btn" id="${checkId}">No cumplió</button>
+                        <button class="day-check-btn" id="${checkId}" style="color: #f72585;">❌</button>
                     `;
 
                     // Cargar datos guardados del input
@@ -886,18 +886,22 @@
                     const checked = localStorage.getItem(checkKey) === '1';
                     if (checked) {
                         checkBtn.classList.add('checked');
-                        checkBtn.textContent = '¡Cumplió!';
+                        checkBtn.textContent = '✔️';
+                        checkBtn.style.color = '#43d96e'; // Verde
                     } else {
                         checkBtn.classList.remove('checked');
-                        checkBtn.textContent = 'No cumplió';
+                        checkBtn.textContent = '❌';
+                        checkBtn.style.color = '#f72585'; // Rojo
                     }
                     checkBtn.addEventListener('click', function() {
                         const isChecked = checkBtn.classList.toggle('checked');
                         if (isChecked) {
-                            checkBtn.textContent = '¡Cumplió!';
+                            checkBtn.textContent = '✔️';
+                            checkBtn.style.color = '#43d96e'; // Verde
                             localStorage.setItem(checkKey, '1');
                         } else {
-                            checkBtn.textContent = 'No cumplió';
+                            checkBtn.textContent = '❌';
+                            checkBtn.style.color = '#f72585'; // Rojo
                             localStorage.setItem(checkKey, '0');
                         }
                     });
