@@ -532,6 +532,39 @@
                     </div>
                 </div>
                 
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Total</div>
+                        <div class="stat-value" id="total-time">0h</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Promedio día</div>
+                        <div class="stat-value" id="daily-avg">0h</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Días registrados</div>
+                        <div class="stat-value" id="days-recorded">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Promedio semana</div>
+                        <div class="stat-value" id="weekly-avg">0h</div>
+                    </div>
+                </div>
+
+                <!-- NUEVOS CONTADORES -->
+                <div class="stats-grid" style="margin-top:8px;">
+                    <div class="stat-box">
+                        <div class="stat-label">Días fallados</div>
+                        <div class="stat-value" id="days-failed" style="color:#f72585;">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Racha actual</div>
+                        <div class="stat-value" id="streak" style="color:#ffd600;">0</div>
+                    </div>
+                </div>
+
+
                 <div class="weekly-stats">
                     <div class="stats-title">Semanas</div>
                     <div class="weeks-container" id="week-stats">
@@ -1053,7 +1086,48 @@
                 dailyAvgEl.textContent = daysWithData > 0 ? `${(totalHours / daysWithData).toFixed(1)}h` : '0h';
                 daysRecordedEl.textContent = daysWithData;
                 weeklyAvgEl.textContent = weeksWithData > 0 ? `${(weeklyTotal / weeksWithData).toFixed(1)}h` : '0h';
-                
+
+                // --- NUEVO: Días fallados y racha actual ---
+                let daysFailed = 0;
+                let currentStreak = 0;
+                let streak = 0;
+
+                // Selecciona todos los días del mes actual, ordenados
+                const days = Array.from(document.querySelectorAll('.day'))
+                    .filter(day => day.style.visibility !== 'hidden')
+                    .sort((a, b) => {
+                        const da = a.getAttribute('data-date').split('-').map(Number);
+                        const db = b.getAttribute('data-date').split('-').map(Number);
+                        const dateA = new Date(da[0], da[1]-1, da[2]);
+                        const dateB = new Date(db[0], db[1]-1, db[2]);
+                        return dateA - dateB;
+                    });
+
+                const today = new Date();
+                days.forEach(dayEl => {
+                    const dateStr = dayEl.getAttribute('data-date');
+                    const [y, m, d] = dateStr.split('-').map(Number);
+                    const dateObj = new Date(y, m-1, d);
+
+                    // Solo contar días hasta hoy (no futuros)
+                    if (dateObj > today) return;
+
+                    const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
+                    const checked = localStorage.getItem(checkKey) === '1';
+
+                    if (checked) {
+                        streak++;
+                    } else {
+                        daysFailed++;
+                        streak = 0;
+                    }
+                });
+                currentStreak = streak;
+
+                document.getElementById('days-failed').textContent = daysFailed;
+                document.getElementById('streak').textContent = currentStreak;
+                // --- FIN NUEVO  ---
+
                 updateWeeklyStats(weeklyAverages);
             }
             
