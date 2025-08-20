@@ -14,11 +14,7 @@
             --color-light: #a8dadc;
             --color-lighter: #e6e6e6;
         }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
+        * { box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
@@ -29,14 +25,12 @@
             overflow-x: hidden;
             -webkit-text-size-adjust: 100%;
         }
-        
         .app-container {
             display: flex;
             flex-direction: column;
             height: calc(100vh - 20px);
             max-width: 100%;
         }
-        
         h1 {
             text-align: center;
             color: var(--color-primary);
@@ -44,29 +38,24 @@
             font-size: 1.5rem;
             text-transform: uppercase;
         }
-        
         .subtitle {
             text-align: center;
             color: var(--color-light);
             margin: 0 0 10px 0;
             font-size: 0.85rem;
         }
-        
         .profile-selection {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
-        /* Sección de ranking */
         .ranking-section {
             background: var(--color-dark);
             border-radius: 10px;
             padding: 10px;
             margin-bottom: 10px;
         }
-        
         .ranking-title {
             color: var(--color-primary);
             font-size: 1rem;
@@ -74,13 +63,11 @@
             text-align: center;
             font-weight: bold;
         }
-        
         .ranking-container {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        
         .ranking-item {
             display: flex;
             align-items: center;
@@ -88,7 +75,6 @@
             border-radius: 8px;
             padding: 10px;
         }
-        
         .ranking-position {
             width: 30px;
             height: 30px;
@@ -102,29 +88,24 @@
             margin-right: 10px;
             flex-shrink: 0;
         }
-        
         .ranking-icon {
             font-size: 1.5rem;
             margin-right: 10px;
             color: var(--color-primary);
         }
-        
         .ranking-info {
             flex-grow: 1;
         }
-        
         .ranking-name {
             font-weight: bold;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
         }
-        
         .ranking-time {
             font-size: 0.8rem;
             color: var(--color-light);
         }
-        
         .points-badge {
             background: #f72585;
             color: white;
@@ -135,15 +116,12 @@
             margin-left: 5px;
             display: inline-block;
         }
-        
         .points-info {
             font-size: 0.7rem;
             color: var(--color-light);
             margin-top: 3px;
             font-style: italic;
         }
-        
-        /* Sección de selección de perfiles */
         .profiles-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -152,7 +130,6 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
-        
         .profile-card {
             padding: 15px 10px;
             background: var(--color-dark);
@@ -165,34 +142,29 @@
             border-left: 4px solid var(--color-primary);
             min-height: 100px;
         }
-        
         .profile-icon {
             font-size: 2rem;
             margin-bottom: 8px;
             color: var(--color-primary);
         }
-        
         .profile-name {
             font-weight: bold;
             color: white;
             font-size: 0.9rem;
             text-align: center;
         }
-        
         .calendar-container {
             flex: 1;
             display: none;
             flex-direction: column;
             overflow: hidden;
         }
-        
         .calendar-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
         .month-selector {
             display: flex;
             justify-content: space-between;
@@ -202,13 +174,11 @@
             border-radius: 10px;
             margin-bottom: 10px;
         }
-        
         .month-title {
             font-weight: bold;
             font-size: 1.1rem;
             color: var(--color-primary);
         }
-        
         .nav-button {
             padding: 8px 12px;
             background: linear-gradient(to right, var(--color-secondary), #3a0ca3);
@@ -218,13 +188,11 @@
             font-weight: bold;
             font-size: 0.8rem;
         }
-        
         .calendar-wrapper {
             flex: 1;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
         }
-        
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -232,7 +200,6 @@
             width: 100%;
             min-width: 300px;
         }
-        
         .day-header {
             font-weight: bold;
             text-align: center;
@@ -244,7 +211,6 @@
             background: var(--color-darker);
             z-index: 1;
         }
-        
         .day {
             background: var(--color-dark);
             border-radius: 8px;
@@ -255,13 +221,11 @@
             align-items: center;
             position: relative;
         }
-        
         .day-number {
             font-weight: bold;
             font-size: 0.9rem;
             margin-bottom: 3px;
         }
-        
         .day-input {
             width: 100%;
             padding: 5px;
@@ -272,7 +236,6 @@
             text-align: center;
             font-size: 0.8rem;
         }
-        
         .week-marker {
             position: absolute;
             top: 2px;
@@ -291,7 +254,6 @@
             border: 1px solid white;
             z-index: 2;
         }
-
         .week-marker::after {
             content: '';
             position: absolute;
@@ -304,61 +266,47 @@
             filter: blur(2px);
             z-index: -1;
         }
-        
-        .weekend {
-            background: #1f2b4e;
-        }
-        
-        .today {
-            border: 2px solid var(--color-primary);
-        }
-        
+        .weekend { background: #1f2b4e; }
+        .today { border: 2px solid var(--color-primary); }
         .stats-section {
             margin-top: 10px;
             background: var(--color-dark);
             border-radius: 10px;
             padding: 10px;
         }
-        
         .stats-title {
             color: var(--color-primary);
             font-size: 1rem;
             margin-bottom: 10px;
             text-align: center;
         }
-        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
-        
         .stat-box {
             background: var(--color-darker);
             border-radius: 8px;
             padding: 10px;
             text-align: center;
         }
-        
         .stat-label {
             font-size: 0.8rem;
             color: var(--color-light);
             margin-bottom: 5px;
         }
-        
         .stat-value {
             font-size: 1.2rem;
             font-weight: bold;
             color: var(--color-primary);
         }
-        
         .weekly-stats {
             margin-top: 10px;
             background: var(--color-dark);
             border-radius: 10px;
             padding: 10px;
         }
-        
         .weeks-container {
             display: flex;
             gap: 8px;
@@ -366,7 +314,6 @@
             padding: 5px 0;
             -webkit-overflow-scrolling: touch;
         }
-        
         .week-stat {
             min-width: 80px;
             background: var(--color-darker);
@@ -375,7 +322,6 @@
             text-align: center;
             flex-shrink: 0;
         }
-        
         .back-button {
             margin-top: 10px;
             padding: 10px;
@@ -386,11 +332,9 @@
             font-weight: bold;
             width: 100%;
         }
-        
         .profile-card:active, button:active {
             transform: scale(0.98);
         }
-
         .day-check-btn {
             margin-top: 5px;
             padding: 3px 10px;
@@ -404,75 +348,90 @@
             transition: background 0.2s;
         }
 
+        .day-check-btn.none {
+            background: #eee !important;
+            color: #aaa !important;
+            border: 1px solid #ccc !important;
+        }
         .day-check-btn.checked {
-            background: #43d96e;
-            color: #16213e;
+            background: #43d96e !important;
+            color: #43d96e !important;
+            border: 1px solid #43d96e !important;
+        }
+        .day-check-btn.failed {
+            background: #f72585 !important;
+            color: #f72585 !important;
+            border: 1px solid #f72585 !important;
         }
 
-        .day-check-btn:not(.checked) {
-            background: #f72585;
-            color: #fff;
+        /* --- BLOQUE DE RACHA Y FALLADOS MÁS PEQUEÑO Y COMPACTO --- */
+        .streak-fail-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 8px;
+            margin: 10px 0 6px 0;
         }
-
-        
+        .fail-box, .streak-box {
+            background: linear-gradient(135deg, #1f2b4e 60%, #222a 100%);
+            border-radius: 10px;
+            padding: 7px 6px 6px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            box-shadow: 0 2px 8px #0002;
+        }
+        .fail-icon, .streak-icon {
+            font-size: 1.3em;
+            margin-bottom: 0;
+        }
+        .fail-label, .streak-label {
+            font-size: 0.7em;
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .fail-label { color: #f72585; }
+        .streak-label { color: #ffd600; }
+        .fail-value, .streak-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 0;
+        }
+        .fail-value { color: #fff; text-shadow: 0 0 6px #f7258555; }
+        .streak-value { color: #ffd600; text-shadow: 0 0 6px #ffd60055; display: flex; align-items: center; justify-content: center; }
+        .streak-fire-emoji {
+            animation: fire-flicker 0.6s infinite alternate;
+            filter: drop-shadow(0 0 8px #ff9800);
+            font-size: 1em;
+            margin-left: 1px;
+        }
+        @keyframes fire-flicker {
+            0% { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 6px #ff9800);}
+            50% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 12px #ffd600);}
+            100% { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 6px #ff9800);}
+        }
         @media (min-width: 600px) {
-            .profiles-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .day {
-                min-height: 70px;
-            }
+            .profiles-container { grid-template-columns: repeat(3, 1fr); }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .day { min-height: 70px; }
         }
-
         @media (max-width: 480px) {
-            
-            .calendar {
-                min-width: unset;
-                gap: 2px;
-            }
-
-            .day-header {
-                font-size: 0.7rem;
-                padding: 3px 0;
-            }
-
-            .day {
-                min-height: 38px;
-                padding: 4px 2px;
-                font-size: 0.8rem;
-            }
-
-            .day-number {
-                font-size: 0.8rem;
-                margin-bottom: 1px;
-            }
-
-            .day-input {
-                padding: 2px;
-                font-size: 0.75rem;
-            }
-
-            .week-marker {
-                width: 12px;
-                height: 12px;
-                font-size: 0.5rem;
-            }
-
-            .day-check-btn {
-                margin-top: 2px;
-                padding: 2px 6px;
-                font-size: 0.7em;
-                border-radius: 6px;
-            }
-            
-            .calendar-wrapper {
-                padding: 0;
-            }
+            .calendar { min-width: unset; gap: 2px; }
+            .day-header { font-size: 0.7rem; padding: 3px 0; }
+            .day { min-height: 38px; padding: 4px 2px; font-size: 0.8rem; }
+            .day-number { font-size: 0.8rem; margin-bottom: 1px; }
+            .day-input { padding: 2px; font-size: 0.75rem; }
+            .week-marker { width: 12px; height: 12px; font-size: 0.5rem; }
+            .day-check-btn { margin-top: 2px; padding: 2px 6px; font-size: 0.7em; border-radius: 6px; }
+            .calendar-wrapper { padding: 0; }
+            .streak-fail-container { gap: 4px; }
+            .fail-box, .streak-box { min-width: 48px; padding: 5px 2px 4px 2px; }
+            .fail-icon, .streak-icon { font-size: 1em; }
+            .fail-label, .streak-label { font-size: 0.6em; }
+            .fail-value, .streak-value { font-size: 0.9em; }
+            .streak-fire-emoji { font-size: 0.8em; }
         }
     </style>
 </head>
@@ -481,21 +440,12 @@
         <div class="profile-selection" id="profile-selection">
             <h1><span class="icon">🫂</span>Calendario</h1>
             <p class="subtitle">"Confesaos vuestras ofensas unos a otros, y orad unos por otros, para que seáis sanados. La oración eficaz del justo puede mucho."  Santiago 5:16</p>
-            
-            <!-- Sección de ranking -->
             <div class="ranking-section">
                 <div class="ranking-title">Ranking Semanal</div>
-                <div class="ranking-container" id="ranking-container">
-                    <!-- Ranking se generará con JavaScript -->
-                </div>
+                <div class="ranking-container" id="ranking-container"></div>
             </div>
-            
-            <!-- Sección de selección de perfiles -->
-            <div class="profiles-container" id="profiles-container">
-                <!-- Perfiles se generarán con JavaScript -->
-            </div>
+            <div class="profiles-container" id="profiles-container"></div>
         </div>
-        
         <div class="calendar-container" id="calendar-container">
             <div class="calendar-content">
                 <div class="month-selector">
@@ -503,13 +453,9 @@
                     <div class="month-title" id="current-month">Mes Actual</div>
                     <button class="nav-button" id="next-month">▶</button>
                 </div>
-                
                 <div class="calendar-wrapper">
-                    <div class="calendar" id="calendar">
-                        <!-- Días del calendario se generarán con JavaScript -->
-                    </div>
+                    <div class="calendar" id="calendar"></div>
                 </div>
-                
                 <div class="stats-section">
                     <div class="stats-title">Estadísticas</div>
                     <div class="stats-grid">
@@ -531,47 +477,22 @@
                         </div>
                     </div>
                 </div>
-                
-                
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">Total</div>
-                        <div class="stat-value" id="total-time">0h</div>
+                <div class="streak-fail-container">
+                    <div class="fail-box">
+                        <div class="fail-icon">❌</div>
+                        <div class="fail-label">Días fallados</div>
+                        <div class="fail-value" id="days-failed">0</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Promedio día</div>
-                        <div class="stat-value" id="daily-avg">0h</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Días registrados</div>
-                        <div class="stat-value" id="days-recorded">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Promedio semana</div>
-                        <div class="stat-value" id="weekly-avg">0h</div>
+                    <div class="streak-box">
+                        <div class="streak-icon"><span class="streak-fire-emoji">🔥</span></div>
+                        <div class="streak-label">Racha actual</div>
+                        <div class="streak-value" id="streak">0</div>
                     </div>
                 </div>
-
-                <!-- NUEVOS CONTADORES -->
-                <div class="stats-grid" style="margin-top:8px;">
-                    <div class="stat-box">
-                        <div class="stat-label">Días fallados</div>
-                        <div class="stat-value" id="days-failed" style="color:#f72585;">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Racha actual</div>
-                        <div class="stat-value" id="streak" style="color:#ffd600;">0</div>
-                    </div>
-                </div>
-
-
                 <div class="weekly-stats">
                     <div class="stats-title">Semanas</div>
-                    <div class="weeks-container" id="week-stats">
-                        <!-- Estadísticas semanales se generarán con JavaScript -->
-                    </div>
+                    <div class="weeks-container" id="week-stats"></div>
                 </div>
-                
                 <button class="back-button" id="back-btn">Cambiar Perfil</button>
             </div>
         </div>
@@ -902,7 +823,7 @@
                         <input type="number" min="0" max="24" step="0.5" placeholder="0"
                             class="day-input"
                             id="${inputId}">
-                        <button class="day-check-btn" id="${checkId}" style="color: #f72585;">❌</button>
+                        <button class="day-check-btn" id="${checkId}">⬜</button>
                     `;
 
                     // Cargar datos guardados del input
@@ -916,27 +837,37 @@
 
                     // Cargar y manejar el botón de cumplimiento
                     const checkBtn = dayEl.querySelector('.day-check-btn');
-                    const checked = localStorage.getItem(checkKey) === '1';
-                    if (checked) {
-                        checkBtn.classList.add('checked');
-                        checkBtn.textContent = '✔️';
-                        checkBtn.style.color = '#43d96e'; // Verde
-                    } else {
-                        checkBtn.classList.remove('checked');
-                        checkBtn.textContent = '❌';
-                        checkBtn.style.color = '#f72585'; // Rojo
-                    }
-                    checkBtn.addEventListener('click', function() {
-                        const isChecked = checkBtn.classList.toggle('checked');
-                        if (isChecked) {
-                            checkBtn.textContent = '✔️';
-                            checkBtn.style.color = '#43d96e'; // Verde
-                            localStorage.setItem(checkKey, '1');
-                        } else {
+                    let state = localStorage.getItem(checkKey); // null, '1', '0'
+
+                    function updateCheckBtnVisual() {
+                        if (state === '1') {
+                            checkBtn.className = 'day-check-btn checked';
+                            checkBtn.textContent = '✅';
+                        } else if (state === '0') {
+                            checkBtn.className = 'day-check-btn failed';
                             checkBtn.textContent = '❌';
-                            checkBtn.style.color = '#f72585'; // Rojo
-                            localStorage.setItem(checkKey, '0');
+                        } else {
+                            checkBtn.className = 'day-check-btn none';
+                            checkBtn.textContent = '⬜';
                         }
+                    }
+
+                    updateCheckBtnVisual();
+
+                    checkBtn.addEventListener('click', function() {
+                        // Ciclo: ninguno -> cumplió -> falló -> ninguno
+                        if (state === null) {
+                            state = '1';
+                            localStorage.setItem(checkKey, '1');
+                        } else if (state === '1') {
+                            state = '0';
+                            localStorage.setItem(checkKey, '0');
+                        } else {
+                            state = null;
+                            localStorage.removeItem(checkKey);
+                        }
+                        updateCheckBtnVisual();
+                        updateStats();
                     });
 
                     calendarEl.appendChild(dayEl);
@@ -1087,47 +1018,62 @@
                 daysRecordedEl.textContent = daysWithData;
                 weeklyAvgEl.textContent = weeksWithData > 0 ? `${(weeklyTotal / weeksWithData).toFixed(1)}h` : '0h';
 
-                // --- NUEVO: Días fallados y racha actual ---
+                // --- Días fallados SOLO del mes actual y racha global ---
                 let daysFailed = 0;
                 let currentStreak = 0;
                 let streak = 0;
 
-                // Selecciona todos los días del mes actual, ordenados
-                const days = Array.from(document.querySelectorAll('.day'))
-                    .filter(day => day.style.visibility !== 'hidden')
-                    .sort((a, b) => {
-                        const da = a.getAttribute('data-date').split('-').map(Number);
-                        const db = b.getAttribute('data-date').split('-').map(Number);
-                        const dateA = new Date(da[0], da[1]-1, da[2]);
-                        const dateB = new Date(db[0], db[1]-1, db[2]);
-                        return dateA - dateB;
-                    });
+                // Días fallados del mes actual
+                for (let day = 1; day <= new Date(currentYear, currentMonth + 1, 0).getDate(); day++) {
+                    const dateStr = `${currentYear}-${currentMonth + 1}-${day}`;
+                    const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
+                    const state = localStorage.getItem(checkKey); // puede ser null, '1', '0'
+                    if (state === '0') daysFailed++;
+                }
 
+                // Racha global (desde el primer día registrado hasta hoy)
                 const today = new Date();
-                days.forEach(dayEl => {
-                    const dateStr = dayEl.getAttribute('data-date');
-                    const [y, m, d] = dateStr.split('-').map(Number);
-                    const dateObj = new Date(y, m-1, d);
+                let firstDate = null;
+                for (let y = today.getFullYear(); y >= 2020; y--) {
+                    for (let m = 11; m >= 0; m--) {
+                        for (let d = 31; d >= 1; d--) {
+                            const dateObj = new Date(y, m, d);
+                            if (dateObj > today) continue;
+                            const dateStr = `${y}-${m+1}-${d}`;
+                            const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
+                            if (localStorage.getItem(checkKey) !== null) {
+                                firstDate = new Date(y, m, d);
+                            }
+                        }
+                    }
+                    if (firstDate) break;
+                }
+                if (!firstDate) firstDate = today;
 
-                    // Solo contar días hasta hoy (no futuros)
-                    if (dateObj > today) return;
-
+                let pointer = new Date(firstDate);
+                while (pointer <= today) {
+                    const dateStr = `${pointer.getFullYear()}-${pointer.getMonth()+1}-${pointer.getDate()}`;
                     const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
                     const checked = localStorage.getItem(checkKey) === '1';
 
                     if (checked) {
                         streak++;
                     } else {
-                        daysFailed++;
                         streak = 0;
                     }
-                });
+                    pointer.setDate(pointer.getDate() + 1);
+                }
                 currentStreak = streak;
 
                 document.getElementById('days-failed').textContent = daysFailed;
-                document.getElementById('streak').textContent = currentStreak;
-                // --- FIN NUEVO  ---
-
+                const streakEl = document.getElementById('streak');
+                if (currentStreak > 1) {
+                    streakEl.innerHTML = `${currentStreak}<span class="streak-fire-emoji">🔥</span>`;
+                } else {
+                    streakEl.textContent = currentStreak;
+                }
+                // --- FIN BLOQUE --
+                
                 updateWeeklyStats(weeklyAverages);
             }
             
