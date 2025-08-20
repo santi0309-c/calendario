@@ -221,11 +221,13 @@
             align-items: center;
             position: relative;
         }
+
         .day-number {
             font-weight: bold;
             font-size: 0.9rem;
             margin-bottom: 3px;
         }
+
         .day-input {
             width: 100%;
             padding: 5px;
@@ -236,6 +238,7 @@
             text-align: center;
             font-size: 0.8rem;
         }
+
         .week-marker {
             position: absolute;
             top: 2px;
@@ -254,6 +257,7 @@
             border: 1px solid white;
             z-index: 2;
         }
+
         .week-marker::after {
             content: '';
             position: absolute;
@@ -888,20 +892,20 @@
                 const weekData = {};
                 
                 inputs.forEach(input => {
-                    if (input.value) {
+                    if (input.value !== "" && parseFloat(input.value) > 0) {
                         const hours = parseFloat(input.value);
                         const date = input.id.replace(`input-${currentProfile.id}-`, '');
                         const [year, month, day] = date.split('-');
                         const dateObj = new Date(year, month-1, day);
-                        
+
                         const weekDates = getWeekDates(year, month-1, day);
                         const weekKey = `${weekDates[0].getFullYear()}-${weekDates[0].getMonth()+1}-${weekDates[0].getDate()}`;
-                        
+
                         totalHours += hours;
                         daysWithData++;
-                        
+
                         localStorage.setItem(`screenTime_${currentProfile.id}_${date}`, input.value);
-                        
+
                         if (!weekData[weekKey]) {
                             weekData[weekKey] = { 
                                 total: 0, 
@@ -913,6 +917,10 @@
                         }
                         weekData[weekKey].total += hours;
                         weekData[weekKey].days++;
+                    } else {
+                        // Si el valor es 0 o vacío, lo eliminamos del storage
+                        const date = input.id.replace(`input-${currentProfile.id}-`, '');
+                        localStorage.removeItem(`screenTime_${currentProfile.id}_${date}`);
                     }
                 });
                 
@@ -1056,13 +1064,15 @@
                 while (pointer <= today) {
                     const dateStr = `${pointer.getFullYear()}-${pointer.getMonth()+1}-${pointer.getDate()}`;
                     const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
-                    const checked = localStorage.getItem(checkKey) === '1';
+                    const state = localStorage.getItem(checkKey); // puede ser null, '1', '0'
 
-                    if (checked) {
+                    if (state === '1') {
                         streak++;
-                    } else {
-                        streak = 0;
-                    }
+                    } else if (state === '0') {
+                        streak = 0; // Solo se corta si explícitamente falló
+                    } // Si es null (gris), la racha sigue igual
+                    // No sumes ni restes si es null
+
                     pointer.setDate(pointer.getDate() + 1);
                 }
                 currentStreak = streak;
