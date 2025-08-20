@@ -106,22 +106,6 @@
             font-size: 0.8rem;
             color: var(--color-light);
         }
-        .points-badge {
-            background: #f72585;
-            color: white;
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-left: 5px;
-            display: inline-block;
-        }
-        .points-info {
-            font-size: 0.7rem;
-            color: var(--color-light);
-            margin-top: 3px;
-            font-style: italic;
-        }
         .profiles-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -221,13 +205,11 @@
             align-items: center;
             position: relative;
         }
-
         .day-number {
             font-weight: bold;
             font-size: 0.9rem;
             margin-bottom: 3px;
         }
-
         .day-input {
             width: 100%;
             padding: 5px;
@@ -238,7 +220,6 @@
             text-align: center;
             font-size: 0.8rem;
         }
-
         .week-marker {
             position: absolute;
             top: 2px;
@@ -257,7 +238,6 @@
             border: 1px solid white;
             z-index: 2;
         }
-
         .week-marker::after {
             content: '';
             position: absolute;
@@ -278,7 +258,6 @@
             border-radius: 10px;
             padding: 10px;
         }
-        
         .stats-title {
             color: var(--color-primary);
             font-size: 0.85rem;
@@ -353,7 +332,6 @@
             color: #fff;
             transition: background 0.2s;
         }
-
         .day-check-btn.none {
             background: #eee !important;
             color: #aaa !important;
@@ -369,8 +347,6 @@
             color: #f72585 !important;
             border: 1px solid #f72585 !important;
         }
-
-        /* --- BLOQUE DE RACHA Y FALLADOS MÁS PEQUEÑO Y COMPACTO --- */
         .streak-fail-container {
             display: flex;
             justify-content: center;
@@ -413,6 +389,24 @@
             font-size: 1em;
             margin-left: 1px;
         }
+
+        .points-badge {
+            background: #f72585;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+            display: inline-block;
+        }
+        .points-info {
+            font-size: 0.7rem;
+            color: var(--color-light);
+            margin-left: 4px;
+            font-style: italic;
+        }
+
         @keyframes fire-flicker {
             0% { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 6px #ff9800);}
             50% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 12px #ffd600);}
@@ -503,7 +497,6 @@
             </div>
         </div>
     </div>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Datos de perfiles
@@ -515,19 +508,13 @@
                 { id: 5, name: "Ale", icon: "🧔", color: "#1e40af" },
                 { id: 6, name: "Luquitas", icon: "👨‍🎤", color: "#3b82f6" }
             ];
-            
-            // Variables de estado
             let currentProfile = null;
             let currentDate = new Date();
             let currentMonth = currentDate.getMonth();
             let currentYear = currentDate.getFullYear();
-            
-            // Nombres de los meses y días (DOMINGO primero)
             const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             const dayNames = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"];
-            
-            // Elementos del DOM
             const profileSelectionEl = document.getElementById('profile-selection');
             const profilesContainerEl = document.getElementById('profiles-container');
             const rankingContainerEl = document.getElementById('ranking-container');
@@ -542,32 +529,28 @@
             const weekStatsEl = document.getElementById('week-stats');
             const backBtn = document.getElementById('back-btn');
             const calendarEl = document.getElementById('calendar');
-            
+
             // Función para obtener el uso de la última semana para un perfil
             function getLastWeekUsage(profileId) {
                 const today = new Date();
                 const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-                
                 let total = 0;
                 let days = 0;
-                
                 for (let d = new Date(oneWeekAgo); d <= today; d.setDate(d.getDate() + 1)) {
                     const dateKey = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
                     const savedValue = localStorage.getItem(`screenTime_${profileId}_${dateKey}`);
-                    
                     if (savedValue) {
                         total += parseFloat(savedValue);
                         days++;
                     }
                 }
-                
                 return {
                     total,
                     days,
                     average: days > 0 ? total / days : 0
                 };
             }
-            
+
             // Función para obtener el rango de fechas de una semana (domingo a sábado)
             function getWeekRange(date) {
                 const d = new Date(date);
@@ -578,107 +561,68 @@
                 return { start, end };
             }
             
-            // --- NUEVO SISTEMA DE PUNTOS ---
-
-            // Devuelve el lunes de la semana de una fecha
-            function getMonday(d) {
+            // --- PUNTOS SEMANALES ---
+            function getMondayOfWeek(d) {
                 d = new Date(d);
-                var day = d.getDay(),
-                    diff = d.getDate() - day + (day === 0 ? -6 : 1); // ajustar si es domingo
+                var day = d.getDay();
+                var diff = d.getDate() - day; // domingo es 0
                 return new Date(d.setDate(diff));
             }
-
-            // Devuelve la clave única de la semana (lunes)
             function getCurrentWeekKey() {
-                const monday = getMonday(new Date());
+                const monday = getMondayOfWeek(new Date());
                 return `${monday.getFullYear()}-${monday.getMonth()+1}-${monday.getDate()}`;
             }
-
-            // Devuelve el promedio semanal de un perfil para la semana indicada
-            function getProfileWeekAvg(profileId, weekKey) {
-                const [year, month, day] = weekKey.split('-').map(Number);
-                const monday = new Date(year, month - 1, day);
-                let total = 0, days = 0;
-                for (let i = 0; i < 7; i++) {
-                    const d = new Date(monday);
-                    d.setDate(monday.getDate() + i);
-                    const dateKey = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-                    const savedValue = localStorage.getItem(`screenTime_${profileId}_${dateKey}`);
-                    if (savedValue && parseFloat(savedValue) > 0) {
-                        total += parseFloat(savedValue);
-                        days++;
-                    }
-                }
-                return days > 0 ? total / days : 0;
-            }
-
-            // Devuelve true si el perfil tiene al menos 2 días registrados en la semana
-            function hasMinDays(profileId, weekKey) {
-                const [year, month, day] = weekKey.split('-').map(Number);
-                const monday = new Date(year, month - 1, day);
-                let days = 0;
-                for (let i = 0; i < 7; i++) {
-                    const d = new Date(monday);
-                    d.setDate(monday.getDate() + i);
-                    const dateKey = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-                    const savedValue = localStorage.getItem(`screenTime_${profileId}_${dateKey}`);
-                    if (savedValue && parseFloat(savedValue) > 0) {
-                        days++;
-                    }
-                }
-                return days >= 2;
-            }
-
-            // Asigna puntos semanales solo si no se asignaron aún y hay competencia real
             function assignWeeklyPoints() {
                 const weekKey = getCurrentWeekKey();
                 if (localStorage.getItem(`pointsAssigned_${weekKey}`)) return;
 
-                // Solo perfiles con al menos 2 días registrados
-                const validProfiles = profiles
-                    .map(p => ({
-                        ...p,
-                        avg: getProfileWeekAvg(p.id, weekKey),
-                        minDays: hasMinDays(p.id, weekKey)
-                    }))
-                    .filter(p => p.minDays);
+                // Ranking por menor promedio semanal (solo perfiles con al menos 2 días registrados)
+                const profilesWithStats = profiles.map(profile => {
+                    const stats = getLastWeekUsage(profile.id);
+                    return {
+                        ...profile,
+                        stats
+                    };
+                }).filter(p => p.stats.days >= 2);
 
-                if (validProfiles.length < 2) return; // No hay competencia real
+                if (profilesWithStats.length < 2) return; // No hay competencia real
 
-                // Ordenar por menor promedio
-                validProfiles.sort((a, b) => a.avg - b.avg);
+                profilesWithStats.sort((a, b) => a.stats.average - b.stats.average);
 
-                // Asignar puntos: 1er lugar = N puntos, 2do = N-1, etc.
-                for (let i = 0; i < validProfiles.length; i++) {
-                    const points = validProfiles.length - i;
-                    const profile = validProfiles[i];
+                const puntos = [6,5,4,3,2,1];
+                profilesWithStats.forEach((profile, idx) => {
+                    const pts = puntos[idx] || 1;
                     // Sumar a puntos totales
                     const totalKey = `totalPoints_${profile.id}`;
                     const prevTotal = parseInt(localStorage.getItem(totalKey)) || 0;
-                    localStorage.setItem(totalKey, prevTotal + points);
+                    //localStorage.setItem(totalKey, prevTotal + pts);
                     // Guardar puntos de la semana
                     const weeklyKey = `weeklyPoints_${profile.id}_${weekKey}`;
-                    localStorage.setItem(weeklyKey, points);
-                }
+                    localStorage.setItem(weeklyKey, pts);
+                });
 
                 localStorage.setItem(`pointsAssigned_${weekKey}`, 'true');
             }
-
-            // Devuelve los puntos totales de un perfil
             function getTotalPoints(profileId) {
-                return parseInt(localStorage.getItem(`totalPoints_${profileId}`)) || 0;
+                // Suma todos los puntos semanales guardados para este perfil
+                let total = 0;
+                for (let key in localStorage) {
+                    if (key.startsWith(`weeklyPoints_${profileId}_`)) {
+                        total += parseInt(localStorage.getItem(key)) || 0;
+                    }
+                }
+                return total;
             }
 
-            // Devuelve los puntos de la semana actual de un perfil
             function getWeeklyPoints(profileId) {
                 const weekKey = getCurrentWeekKey();
                 return parseInt(localStorage.getItem(`weeklyPoints_${profileId}_${weekKey}`)) || 0;
             }
-                        
-            // Función para generar el ranking
+
+            // Función para generar el ranking (solo por promedio semanal)
             function generateRanking() {
                 rankingContainerEl.innerHTML = '';
-                assignWeeklyPoints(); // <-- NUEVO: asigna puntos si corresponde
+                assignWeeklyPoints(); // Asigna puntos si corresponde
 
                 // Calcular tiempos y puntos
                 const profilesWithStats = profiles.map(profile => {
@@ -715,25 +659,20 @@
                         <div class="ranking-info">
                             <div class="ranking-name">${profile.name} 
                                 <span class="points-badge">${profile.totalPoints} pts</span>
+                                ${pointsText ? `<span class="points-info">${pointsText}</span>` : ''}
                             </div>
                             <div class="ranking-time">${usageText}</div>
-                            ${profile.weeklyPoints > 0 ? `<div class="points-info">${pointsText}</div>` : ''}
                         </div>
                     `;
 
                     rankingContainerEl.appendChild(rankingItem);
                 });
             }
-            
-            // Resto del código se mantiene igual...
-            // [Las funciones generateProfiles(), selectProfile(), getWeekNumber(), 
-            // getWeekDates(), generateCalendar(), updateStats(), updateWeeklyStats()
-            // y los event listeners se mantienen exactamente igual que en el código anterior]
-            
-            // Función para generar los perfiles
+
+            // El resto del código (perfiles, calendario, stats, etc.) permanece igual...
+
             function generateProfiles() {
                 profilesContainerEl.innerHTML = '';
-                
                 profiles.forEach(profile => {
                     const profileCard = document.createElement('div');
                     profileCard.className = 'profile-card';
@@ -742,107 +681,82 @@
                         <div class="profile-icon">${profile.icon}</div>
                         <div class="profile-name">${profile.name}</div>
                     `;
-                    
                     profileCard.addEventListener('click', () => selectProfile(profile));
                     profilesContainerEl.appendChild(profileCard);
                 });
             }
-            
-            // Seleccionar un perfil
+
             function selectProfile(profile) {
                 currentProfile = profile;
                 document.documentElement.style.setProperty('--color-primary', profile.color);
-                
                 profileSelectionEl.style.display = 'none';
                 calendarContainerEl.style.display = 'flex';
-                
                 generateCalendar(currentMonth, currentYear);
             }
-            
-            // Volver a selección de perfiles
+
             backBtn.addEventListener('click', function() {
                 profileSelectionEl.style.display = 'flex';
                 calendarContainerEl.style.display = 'none';
                 currentProfile = null;
                 document.documentElement.style.setProperty('--color-primary', '#4cc9f0');
-                generateRanking(); // Actualizar ranking al volver
+                generateRanking();
             });
-            
-            // Función para obtener el número de semana (comenzando en domingo)
+
             function getWeekNumber(date) {
                 const d = new Date(date);
                 d.setHours(0, 0, 0, 0);
-                // Ajuste para que la semana comience en domingo
                 d.setDate(d.getDate() - d.getDay());
                 const week1 = new Date(d.getFullYear(), 0, 1);
-                // Asegurar que el 1 de enero esté en la semana 1
                 if (week1.getDay() > 0) {
                     week1.setDate(week1.getDate() - week1.getDay());
                 }
                 return 1 + Math.round(((d - week1) / 86400000) / 7);
             }
-            
-            // Función para obtener todas las fechas de una semana (domingo a sábado)
+
             function getWeekDates(year, month, day) {
                 const date = new Date(year, month, day);
                 const { start } = getWeekRange(date);
                 const dates = [];
-                
                 for (let i = 0; i < 7; i++) {
                     const d = new Date(start);
                     d.setDate(d.getDate() + i);
                     dates.push(d);
                 }
-                
                 return dates;
             }
-            
-            // Generar el calendario
+
             function generateCalendar(month, year) {
                 currentMonthEl.textContent = `${monthNames[month]} ${year}`;
                 calendarEl.innerHTML = '';
-
-                // Agregar encabezados de días (DOMINGO primero)
                 for (let i = 0; i < 7; i++) {
                     const dayHeader = document.createElement('div');
                     dayHeader.className = 'day-header';
                     dayHeader.textContent = dayNames[i];
                     calendarEl.appendChild(dayHeader);
                 }
-
-                // Obtener primer día del mes y último día del mes
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                // Agregar días vacíos si el mes no comienza en domingo
                 for (let i = 0; i < firstDay; i++) {
                     const emptyDay = document.createElement('div');
                     emptyDay.className = 'day';
                     emptyDay.style.visibility = 'hidden';
                     calendarEl.appendChild(emptyDay);
                 }
-
-                // Agregar días del mes
                 for (let day = 1; day <= daysInMonth; day++) {
                     const date = new Date(year, month, day);
                     const dayOfWeek = date.getDay();
                     const weekNumber = getWeekNumber(date);
-
                     const dayEl = document.createElement('div');
                     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
                     const isToday = date.getDate() === currentDate.getDate() &&
                                     date.getMonth() === currentDate.getMonth() &&
                                     date.getFullYear() === currentDate.getFullYear();
-
                     dayEl.className = `day${isWeekend ? ' weekend' : ''}${isToday ? ' today' : ''}`;
                     dayEl.setAttribute('data-date', `${year}-${month+1}-${day}`);
                     dayEl.setAttribute('data-week', weekNumber);
-
-                    // IDs únicos para input y botón
                     const inputId = `input-${currentProfile.id}-${year}-${month+1}-${day}`;
                     const checkId = `check-${currentProfile.id}-${year}-${month+1}-${day}`;
                     const checkKey = `checkDone_${currentProfile.id}_${year}-${month+1}-${day}`;
-
                     dayEl.innerHTML = `
                         <div class="week-marker">${weekNumber}</div>
                         <div class="day-number">${day}</div>
@@ -851,20 +765,13 @@
                             id="${inputId}">
                         <button class="day-check-btn" id="${checkId}">⬜</button>
                     `;
-
-                    // Cargar datos guardados del input
                     const savedValue = localStorage.getItem(`screenTime_${currentProfile.id}_${year}-${month+1}-${day}`);
                     if (savedValue) {
                         dayEl.querySelector('input').value = savedValue;
                     }
-
-                    // Evento para actualizar stats al cambiar valor
                     dayEl.querySelector('input').addEventListener('change', updateStats);
-
-                    // Cargar y manejar el botón de cumplimiento
                     const checkBtn = dayEl.querySelector('.day-check-btn');
-                    let state = localStorage.getItem(checkKey); // null, '1', '0'
-
+                    let state = localStorage.getItem(checkKey);
                     function updateCheckBtnVisual() {
                         if (state === '1') {
                             checkBtn.className = 'day-check-btn checked';
@@ -877,11 +784,8 @@
                             checkBtn.textContent = '⬜';
                         }
                     }
-
                     updateCheckBtnVisual();
-
                     checkBtn.addEventListener('click', function() {
-                        // Ciclo: ninguno -> cumplió -> falló -> ninguno
                         if (state === null) {
                             state = '1';
                             localStorage.setItem(checkKey, '1');
@@ -895,37 +799,28 @@
                         updateCheckBtnVisual();
                         updateStats();
                     });
-
                     calendarEl.appendChild(dayEl);
                 }
-
                 updateStats();
             }
-            
-            // Función para actualizar estadísticas
+
             function updateStats() {
                 if (!currentProfile) return;
-                
                 let totalHours = 0;
                 let daysWithData = 0;
                 const inputs = document.querySelectorAll('.day-input');
                 const weekData = {};
-                
                 inputs.forEach(input => {
                     if (input.value !== "" && parseFloat(input.value) > 0) {
                         const hours = parseFloat(input.value);
                         const date = input.id.replace(`input-${currentProfile.id}-`, '');
                         const [year, month, day] = date.split('-');
                         const dateObj = new Date(year, month-1, day);
-
                         const weekDates = getWeekDates(year, month-1, day);
                         const weekKey = `${weekDates[0].getFullYear()}-${weekDates[0].getMonth()+1}-${weekDates[0].getDate()}`;
-
                         totalHours += hours;
                         daysWithData++;
-
                         localStorage.setItem(`screenTime_${currentProfile.id}_${date}`, input.value);
-
                         if (!weekData[weekKey]) {
                             weekData[weekKey] = { 
                                 total: 0, 
@@ -938,32 +833,23 @@
                         weekData[weekKey].total += hours;
                         weekData[weekKey].days++;
                     } else {
-                        // Si el valor es 0 o vacío, lo eliminamos del storage
                         const date = input.id.replace(`input-${currentProfile.id}-`, '');
                         localStorage.removeItem(`screenTime_${currentProfile.id}_${date}`);
                     }
                 });
-                
-                // Buscar datos en meses adyacentes para semanas divididas
                 const extendedWeekData = {...weekData};
-                
-                // Verificar primera semana
                 const firstWeekDates = getWeekDates(currentYear, currentMonth, 1);
                 if (firstWeekDates[0].getMonth() !== currentMonth) {
                     const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
                     const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-                    
                     for (let day = new Date(prevYear, prevMonth + 1, 0).getDate(); day > 0; day--) {
                         const dateObj = new Date(prevYear, prevMonth, day);
                         const weekDates = getWeekDates(prevYear, prevMonth, day);
-                        
                         if (weekDates[0].getTime() === firstWeekDates[0].getTime()) {
                             const dateKey = `${prevYear}-${prevMonth+1}-${day}`;
                             const savedValue = localStorage.getItem(`screenTime_${currentProfile.id}_${dateKey}`);
-                            
                             if (savedValue) {
                                 const weekKey = `${weekDates[0].getFullYear()}-${weekDates[0].getMonth()+1}-${weekDates[0].getDate()}`;
-                                
                                 if (!extendedWeekData[weekKey]) {
                                     extendedWeekData[weekKey] = { 
                                         total: 0, 
@@ -973,7 +859,6 @@
                                         endDate: weekDates[6]
                                     };
                                 }
-                                
                                 extendedWeekData[weekKey].total += parseFloat(savedValue);
                                 extendedWeekData[weekKey].days++;
                             }
@@ -982,25 +867,19 @@
                         }
                     }
                 }
-                
-                // Verificar última semana
                 const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
                 const lastWeekDates = getWeekDates(currentYear, currentMonth, lastDay);
                 if (lastWeekDates[6].getMonth() !== currentMonth) {
                     const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
                     const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-                    
                     for (let day = 1; day <= 7; day++) {
                         const dateObj = new Date(nextYear, nextMonth, day);
                         const weekDates = getWeekDates(nextYear, nextMonth, day);
-                        
                         if (weekDates[0].getTime() === lastWeekDates[0].getTime()) {
                             const dateKey = `${nextYear}-${nextMonth+1}-${day}`;
                             const savedValue = localStorage.getItem(`screenTime_${currentProfile.id}_${dateKey}`);
-                            
                             if (savedValue) {
                                 const weekKey = `${weekDates[0].getFullYear()}-${weekDates[0].getMonth()+1}-${weekDates[0].getDate()}`;
-                                
                                 if (!extendedWeekData[weekKey]) {
                                     extendedWeekData[weekKey] = { 
                                         total: 0, 
@@ -1010,7 +889,6 @@
                                         endDate: weekDates[6]
                                     };
                                 }
-                                
                                 extendedWeekData[weekKey].total += parseFloat(savedValue);
                                 extendedWeekData[weekKey].days++;
                             }
@@ -1019,12 +897,9 @@
                         }
                     }
                 }
-                
-                // Calcular promedios semanales
                 let weeklyAverages = [];
                 let weeklyTotal = 0;
                 let weeksWithData = 0;
-                
                 for (const weekKey in extendedWeekData) {
                     const week = extendedWeekData[weekKey];
                     if (week.days > 0) {
@@ -1039,29 +914,20 @@
                         weeksWithData++;
                     }
                 }
-                
                 weeklyAverages.sort((a, b) => a.startDate - b.startDate);
-                
-                // Actualizar UI
                 totalTimeEl.textContent = `${totalHours.toFixed(1)}h`;
                 dailyAvgEl.textContent = daysWithData > 0 ? `${(totalHours / daysWithData).toFixed(1)}h` : '0h';
                 daysRecordedEl.textContent = daysWithData;
                 weeklyAvgEl.textContent = weeksWithData > 0 ? `${(weeklyTotal / weeksWithData).toFixed(1)}h` : '0h';
-
-                // --- Días fallados SOLO del mes actual y racha global ---
                 let daysFailed = 0;
                 let currentStreak = 0;
                 let streak = 0;
-
-                // Días fallados del mes actual
                 for (let day = 1; day <= new Date(currentYear, currentMonth + 1, 0).getDate(); day++) {
                     const dateStr = `${currentYear}-${currentMonth + 1}-${day}`;
                     const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
-                    const state = localStorage.getItem(checkKey); // puede ser null, '1', '0'
+                    const state = localStorage.getItem(checkKey);
                     if (state === '0') daysFailed++;
                 }
-
-                // Racha global (desde el primer día registrado hasta hoy)
                 const today = new Date();
                 let firstDate = null;
                 for (let y = today.getFullYear(); y >= 2020; y--) {
@@ -1079,24 +945,19 @@
                     if (firstDate) break;
                 }
                 if (!firstDate) firstDate = today;
-
                 let pointer = new Date(firstDate);
                 while (pointer <= today) {
                     const dateStr = `${pointer.getFullYear()}-${pointer.getMonth()+1}-${pointer.getDate()}`;
                     const checkKey = `checkDone_${currentProfile.id}_${dateStr}`;
-                    const state = localStorage.getItem(checkKey); // puede ser null, '1', '0'
-
+                    const state = localStorage.getItem(checkKey);
                     if (state === '1') {
                         streak++;
                     } else if (state === '0') {
-                        streak = 0; // Solo se corta si explícitamente falló
-                    } // Si es null (gris), la racha sigue igual
-                    // No sumes ni restes si es null
-
+                        streak = 0;
+                    }
                     pointer.setDate(pointer.getDate() + 1);
                 }
                 currentStreak = streak;
-
                 document.getElementById('days-failed').textContent = daysFailed;
                 const streakEl = document.getElementById('streak');
                 if (currentStreak > 1) {
@@ -1104,34 +965,26 @@
                 } else {
                     streakEl.textContent = currentStreak;
                 }
-                // --- FIN BLOQUE --
-                
                 updateWeeklyStats(weeklyAverages);
             }
-            
-            // Función para actualizar estadísticas semanales
+
             function updateWeeklyStats(weeklyAverages) {
                 weekStatsEl.innerHTML = '';
-                
                 weeklyAverages.forEach(week => {
                     const weekStatEl = document.createElement('div');
                     weekStatEl.className = 'week-stat';
-                    
                     const formatDate = (date) => `${date.getDate()}/${date.getMonth()+1}`;
                     const startDate = formatDate(week.startDate);
                     const endDate = formatDate(week.endDate);
-                    
                     weekStatEl.innerHTML = `
                         <div style="font-weight:bold;">Semana ${week.week}</div>
                         <div style="font-size:0.7em;">${startDate}-${endDate}</div>
                         <div style="font-weight:bold;color:${currentProfile.color}">${week.average.toFixed(1)}h</div>
                     `;
-                    
                     weekStatsEl.appendChild(weekStatEl);
                 });
             }
-            
-            // Event listeners para navegación
+
             prevMonthBtn.addEventListener('click', function() {
                 currentMonth--;
                 if (currentMonth < 0) {
@@ -1140,7 +993,7 @@
                 }
                 generateCalendar(currentMonth, currentYear);
             });
-            
+
             nextMonthBtn.addEventListener('click', function() {
                 currentMonth++;
                 if (currentMonth > 11) {
@@ -1149,8 +1002,7 @@
                 }
                 generateCalendar(currentMonth, currentYear);
             });
-            
-            // Inicializar
+
             generateRanking();
             generateProfiles();
         });
