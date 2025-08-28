@@ -504,6 +504,10 @@
         </div>
     </div>
     
+
+    
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Datos de perfiles
@@ -653,8 +657,21 @@
                 localStorage.setItem(weeklyPointsKey, points);
             }
             
+            async function fetchProfiles() {
+                try {
+                    const response = await fetch('/api/profiles');
+                    profiles = await response.json();
+                    return profiles;
+                } catch (error) {
+                    console.error('Error al obtener perfiles:', error);
+                    return [];
+                }
+            }
+
+
             // Función para generar el ranking
-            function generateRanking() {
+            async function generateRanking() {
+                await fetchProfiles();      
                 rankingContainerEl.innerHTML = '';
                 
                 // Calcular puntos para esta semana (si corresponde)
